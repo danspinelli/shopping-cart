@@ -39,4 +39,4 @@ PLAYER_NAME="Guest 1"
 Run the game script:
 
 ```py
-python app/my_script.py
+python shopping_cart.py

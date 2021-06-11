@@ -1,5 +1,7 @@
 # shopping_cart.py
 
+from datetime import datetime
+
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -37,7 +39,38 @@ def to_usd(my_price):
     return f"${my_price:,.2f}" #> $12,000.71
 
 
-# TODO: write some Python code here to produce the desired output
+# Cashier Inputs the products that are scanned
 
-print(products)
+#product_input_list = []
 
+#while True:
+product_input = input("Please input a product identifier, or 'DONE' if there are no more items:")
+    #if product_input.upper() == "DONE":
+       # break
+    #else:
+     #   product_input_list.append(product_input)
+#print(type("... ", product_input_list))
+#print(product_input_list)
+
+
+
+
+# Checkout Headers and Date
+
+today = datetime.now()
+
+print("------------------------------------")
+print("Spinelli's Supermarket \nwww.spinellissupermarket.com")
+print("------------------------------------")
+print("Today's Date:", today.strftime("%d/%m/%Y %H:%M:%S"))
+print("------------------------------------")
+print("SELECTED PRODUCTS")
+
+#Match product data to the product inputs
+
+#for product_input in product_input_list:
+matching_names = [x for x in products if str(x["id"]) == str(product_input)]
+matching_name = matching_names[0]
+print("SELECTED PRODUCT: " + matching_name["name"] + " " + str(matching_name["price"]))
+#matching_name = matching_names[]
+#matching_price = 
