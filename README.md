@@ -31,7 +31,9 @@ You will have to create your own local .env file. So you should add a new ".env"
 
 
 ```
-PLAYER_NAME="Guest 1"
+
+ TAX_RATE=0.0875
+ 
 ```
 
 ## Usage

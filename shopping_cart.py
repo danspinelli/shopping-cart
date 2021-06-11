@@ -1,6 +1,9 @@
 # shopping_cart.py
 
+import os
+import dotenv
 from datetime import datetime
+from dotenv import load_dotenv
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -39,6 +42,7 @@ def to_usd(my_price):
     return f"${my_price:,.2f}" #> $12,000.71
 
 
+
 # Cashier Inputs the products that are scanned
 
 product_input_list = []
@@ -49,10 +53,8 @@ while True:
         break
     else:
         product_input_list.append(product_input)
-print("... ", product_input_list)
-print(type(product_input_list))
-
-
+#print("... ", product_input_list)
+#print(type(product_input_list))
 
 
 # Checkout Headers and Date
@@ -60,15 +62,27 @@ print(type(product_input_list))
 today = datetime.now()
 
 print("------------------------------------")
-print("Spinelli's Supermarket \nwww.spinellissupermarket.com")
+print("SPINELLI'S SUPERMARKET \nwww.spinellissupermarket.com")
 print("------------------------------------")
-print("Today's Date:", today.strftime("%d/%m/%Y %H:%M:%S"))
+print("TODAY'S DATE:", today.strftime("%d/%m/%Y %H:%M:%S"))
 print("------------------------------------")
 print("SELECTED PRODUCTS")
 
+
 #Match product data to the product inputs
+
+subtotal_price = 0
+tax_rate = float(os.getenv("TAX_RATE", default = ".1"))
 
 for product_input in product_input_list:
     matching_names = [x for x in products if str(x["id"]) == str(product_input)]
     matching_name = matching_names[0]
-    print("SELECTED PRODUCT: " + matching_name["name"] + " " + str(matching_name["price"]))
+    subtotal_price = subtotal_price + matching_name["price"]
+    print("SELECTED PRODUCT: " + matching_name["name"] + " " + str(to_usd(matching_name["price"])))
+
+
+print("SUBTOTAL: " + str(to_usd(subtotal_price)))
+print("TAX: " + str(to_usd(tax_rate*subtotal_price)))
+print("TOTAL: " + str(to_usd(subtotal_price + (tax_rate*subtotal_price))))
+print("------------------------------------")
+print("HAVE A NICE DAY!")
