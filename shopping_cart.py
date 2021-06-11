@@ -41,16 +41,16 @@ def to_usd(my_price):
 
 # Cashier Inputs the products that are scanned
 
-#product_input_list = []
+product_input_list = []
 
-#while True:
-product_input = input("Please input a product identifier, or 'DONE' if there are no more items:")
-    #if product_input.upper() == "DONE":
-       # break
-    #else:
-     #   product_input_list.append(product_input)
-#print(type("... ", product_input_list))
-#print(product_input_list)
+while True:
+    product_input = input("Please input a product identifier, or 'DONE' if there are no more items:")
+    if product_input.upper() == "DONE":
+        break
+    else:
+        product_input_list.append(product_input)
+print("... ", product_input_list)
+print(type(product_input_list))
 
 
 
@@ -68,9 +68,7 @@ print("SELECTED PRODUCTS")
 
 #Match product data to the product inputs
 
-#for product_input in product_input_list:
-matching_names = [x for x in products if str(x["id"]) == str(product_input)]
-matching_name = matching_names[0]
-print("SELECTED PRODUCT: " + matching_name["name"] + " " + str(matching_name["price"]))
-#matching_name = matching_names[]
-#matching_price = 
+for product_input in product_input_list:
+    matching_names = [x for x in products if str(x["id"]) == str(product_input)]
+    matching_name = matching_names[0]
+    print("SELECTED PRODUCT: " + matching_name["name"] + " " + str(matching_name["price"]))
