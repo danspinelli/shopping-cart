@@ -1,9 +1,12 @@
 # shopping_cart.py
 
 import os
-import dotenv
-from datetime import datetime
 from dotenv import load_dotenv
+from datetime import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+load_dotenv()
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -45,13 +48,20 @@ def to_usd(my_price):
 
 # Cashier Inputs the products that are scanned
 
+
+valid_ids = []
+for p in products:
+    valid_ids.append(str(p["id"]))
+
 product_input_list = []
 
 while True:
     product_input = input("Please input a product identifier, or 'DONE' if there are no more items:")
     if product_input.upper() == "DONE":
         break
-    else:
+    elif product_input not in valid_ids:
+        print("Invalid Item")   
+    else:   
         product_input_list.append(product_input)
 #print("... ", product_input_list)
 #print(type(product_input_list))
@@ -64,12 +74,13 @@ today = datetime.now()
 print("------------------------------------")
 print("SPINELLI'S SUPERMARKET \nwww.spinellissupermarket.com")
 print("------------------------------------")
-print("TODAY'S DATE:", today.strftime("%d/%m/%Y %H:%M:%S"))
+print("TODAY'S DATE:", today.strftime("%m/%d/%Y %H:%M:%S"))
 print("------------------------------------")
-print("SELECTED PRODUCTS")
+print("SELECTED PRODUCTS:")
 
 
 #Match product data to the product inputs
+
 
 subtotal_price = 0
 tax_rate = float(os.getenv("TAX_RATE", default = ".1"))
@@ -78,11 +89,50 @@ for product_input in product_input_list:
     matching_names = [x for x in products if str(x["id"]) == str(product_input)]
     matching_name = matching_names[0]
     subtotal_price = subtotal_price + matching_name["price"]
-    print("SELECTED PRODUCT: " + matching_name["name"] + " " + str(to_usd(matching_name["price"])))
+    print("+ " + matching_name["name"] + " | " + str(to_usd(matching_name["price"])))
 
-
+print("------------------------------------")
 print("SUBTOTAL: " + str(to_usd(subtotal_price)))
 print("TAX: " + str(to_usd(tax_rate*subtotal_price)))
 print("TOTAL: " + str(to_usd(subtotal_price + (tax_rate*subtotal_price))))
 print("------------------------------------")
 print("HAVE A NICE DAY!")
+
+
+
+
+#Send email receipt (attempt at the email receipt)
+
+#SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
+#SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
+#
+##print(SENDER_ADDRESS)
+##print(SENDGRID_API_KEY)
+#
+#client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
+##print("CLIENT:", type(client))
+#
+#subject = "Your Receipt from Spinelli's Supermarket"
+#html_content = { "SUBTOTAL": to_usd(subtotal_price),
+#        "TAX": to_usd(tax_rate*subtotal_price),
+#        "TOTAL PRICE": (to_usd(subtotal_price + (tax_rate*subtotal_price))),
+#        "TIME": today.strftime("%m/%d/%Y %H:%M:%S"),
+#        "ITEMS": product_input_list }
+#
+#print("HTML:", html_content)
+#
+#
+#message = Mail(from_email=SENDER_ADDRESS, to_emails=SENDER_ADDRESS, subject=subject, html_content=html_content)
+#
+#try:
+#    response = client.send(message)
+#
+#    #print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
+#    if response.status_code == 202:
+#        print("Receipt Successfully Sent") #> 202 indicates SUCCESS
+#    #print(response.body)
+#    #print(response.headers)
+#
+#except Exception as err:
+#    print(type(err))
+#    print(err)

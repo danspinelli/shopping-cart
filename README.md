@@ -32,8 +32,13 @@ You will have to create your own local .env file. So you should add a new ".env"
 
 ```
 
- TAX_RATE=0.0875
+ TAX_RATE="Tax Rate Used"
  
+SENDGRID_API_KEY="Private Sendgrid API Key"
+SENDER_ADDRESS="Sender's email address"
+
+
+
 ```
 
 ## Usage
